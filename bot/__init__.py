@@ -46,16 +46,6 @@ logging.basicConfig(
 
 log = logging.getLogger(__name__)
 
-# We need to defer the import from `constants.py`
-# because otherwise the logging config would not be applied
-# to any logging done in the module.
-from bot.constants import Papertrail  # noqa
-if Papertrail.address:
-    papertrail_handler = SysLogHandler(address=(Papertrail.address, Papertrail.port))
-    papertrail_handler.setLevel(logging.DEBUG)
-    logging.getLogger('bot').addHandler(papertrail_handler)
-
-
 # Silence discord and websockets
 logging.getLogger("discord.client").setLevel(logging.ERROR)
 logging.getLogger("discord.gateway").setLevel(logging.ERROR)
