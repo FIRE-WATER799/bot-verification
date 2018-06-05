@@ -1,0 +1,21 @@
+variables:
+  - PIPENV_VENV_IN_PROJECT=1
+  - PIPENV_IGNORE_VIRTUALENVS=1
+
+before_script:
+  - apt-get update -qy
+  - apt-get install -y python-dev python-pip
+  - pip install pipenv
+  - python --version
+  - which python
+  - which pipenv
+
+build:
+  stage: build
+  script:
+    - pipenv sync --dev --three
+
+test:
+  stage: test
+  script:
+    - pipenv run python -m flake8

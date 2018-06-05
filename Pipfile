@@ -1,0 +1,28 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+discord = {file = "https://github.com/Rapptz/discord.py/archive/rewrite.zip", egg = "discord.py[voice]"}
+logmatic-python = "*"
+aiohttp = "<2.3.0,>=2.0.0"
+websockets = ">=4.0,<5.0"
+pyyaml = "*"
+
+[dev-packages]
+"flake8" = "*"
+"flake8-bugbear" = "*"
+"flake8-import-order" = "*"
+"flake8-tidy-imports" = "*"
+"flake8-todo" = "*"
+"flake8-string-format" = "*"
+safety = "*"
+dodgy = "*"
+requests = "*"
+
+[requires]
+python_version = "3.6"
+
+[scripts]
+start = "python -m bot"
