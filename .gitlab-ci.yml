@@ -2,12 +2,10 @@ variables:
   PIPENV_VENV_IN_PROJECT: 1
   PIPENV_IGNORE_VIRTUALENVS: 1
 
-build:
-  stage: build
-  script:
+before_script:
     - pipenv sync --dev
 
-test:
+Lint:
   stage: test
   script:
     - pipenv run python -m flake8
