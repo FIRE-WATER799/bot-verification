@@ -3,7 +3,6 @@ import logging
 import re
 import sys
 from logging import Logger, StreamHandler
-from logging.handlers import SysLogHandler
 
 import discord.ext.commands.view
 from logmatic import JsonFormatter
