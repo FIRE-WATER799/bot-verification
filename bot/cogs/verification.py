@@ -37,7 +37,11 @@ class Verification:
                       "channel. We are providing instructions how to verify.")
 
             log.trace(f"Deleting the message posted by {ctx.author}")
-            await ctx.message.delete()
+
+            try:
+                await ctx.message.delete()
+            except NotFound:
+                log.trace("No message found, it must have been deleted by another bot.")
 
     @command(name="accept", hidden=True, aliases=["verify", "verified", "accepted", "accept()"])
     @without_role(Roles.verified)
@@ -55,7 +59,7 @@ class Verification:
         try:
             await ctx.message.delete()
         except NotFound:
-            log.trace(f"No message found, it must have been deleted by another bot.")
+            log.trace("No message found, it must have been deleted by another bot.")
 
 
 def setup(bot):
