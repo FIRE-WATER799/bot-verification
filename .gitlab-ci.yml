@@ -6,6 +6,7 @@ before_script:
     - pipenv sync --dev
 
 Lint:
+  tags: slow-internet
   stage: test
   script:
     - pipenv run python -m flake8
