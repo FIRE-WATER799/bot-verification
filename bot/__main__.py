@@ -17,4 +17,6 @@ bot = Bot(
 bot.load_extension("bot.cogs.security")
 bot.load_extension("bot.cogs.verification")
 
+del bot.all_commands["help"]
+
 bot.run(BotConfig.token)
