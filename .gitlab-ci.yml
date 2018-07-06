@@ -1,13 +1,32 @@
+image: pythondiscord/bot-ci:latest
+
 variables:
   PIPENV_VENV_IN_PROJECT: 1
   PIPENV_IGNORE_VIRTUALENVS: 1
 
-before_script:
-  - pipenv sync --dev
+stages:
+  - test
+  - build
 
-Lint:
+test:
   tags:
-    - slow-internet
+   - docker
+
   stage: test
+
   script:
+    - pipenv sync --dev
     - pipenv run python -m flake8
+
+build:
+  image: docker:git
+
+  tags:
+   - docker
+
+  services:
+    - docker:dind
+
+  stage: build
+  script:
+    - sh docker/build.sh

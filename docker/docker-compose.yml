@@ -1,0 +1,10 @@
+version: "3"
+services:
+  pd-bot-verification:
+    image: pythondiscord/bot-verification:latest
+    container_name: pd-bot-verification
+
+    restart: always
+
+    environment:
+      - BOT_TOKEN
