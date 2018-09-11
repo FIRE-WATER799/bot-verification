@@ -33,10 +33,8 @@ class Verification:
                                 "in the verification channel, but is already verified.")
                     return  # They're already verified
 
-            log.debug(f"{ctx.author} posted '{ctx.message.content}' in the verification "
-                      "channel. We are providing instructions how to verify.")
-
-            log.trace(f"Deleting the message posted by {ctx.author}")
+            log.trace(f"{ctx.author} posted '{ctx.message.content}' in the verification "
+                      "channel - deleting it.")
 
             try:
                 await ctx.message.delete()
