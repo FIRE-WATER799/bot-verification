@@ -58,6 +58,7 @@ def create_snek_frame(
     :param text_color: the color of the text.
     :return: a PIL image, representing a single frame.
     """
+
     start_x = random.randint(image_margins[X], image_dimensions[X] - image_margins[X])
     start_y = random.randint(image_margins[Y], image_dimensions[Y] - image_margins[Y])
     points = [(start_x, start_y)]

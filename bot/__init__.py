@@ -15,8 +15,7 @@ def monkeypatch_trace(self, msg, *args, **kwargs):
     """
     Log 'msg % args' with severity 'TRACE'.
 
-    To pass exception information, use the keyword argument exc_info with
-    a true value, e.g.
+    To pass exception information, use the keyword argument exc_info with a true value, e.g.
 
     logger.trace("Houston, we have an %s", "interesting problem", exc_info=1)
     """
@@ -55,10 +54,8 @@ logging.getLogger("websockets.protocol").setLevel(logging.ERROR)
 
 def _skip_string(self, string: str) -> bool:
     """
-    Our version of the skip_string method from
-    discord.ext.commands.view; used to find
-    the prefix in a message, but allowing prefix
-    to ignore case sensitivity
+    Our version of the skip_string method from discord.ext.commands.view; used to find the prefix in
+    a message, but allowing prefix to ignore case sensitivity
     """
 
     strlen = len(string)
@@ -71,11 +68,9 @@ def _skip_string(self, string: str) -> bool:
 
 def _get_word(self) -> str:
     """
-    Invokes the get_word method from
-    discord.ext.commands.view used to find
-    the bot command part of a message, but
-    allows the command to ignore case sensitivity,
-    and allows commands to have Python syntax.
+    Invokes the get_word method from discord.ext.commands.view used to find the bot command part of
+    a message, but allows the command to ignore case sensitivity, and allows commands to have Python
+    syntax.
     """
 
     def parse_python(buffer_pos):

@@ -1,13 +1,11 @@
 """
 Loads bot configuration from YAML files.
-By default, this simply loads the default
-configuration located at `config-default.yml`.
-If a file called `config.yml` is found in the
-project directory, the default configuration
-is recursively updated with any settings from
-the custom configuration. Any settings left
-out in the custom user configuration will stay
-their default values from `config-default.yml`.
+
+By default, this simply loads the default configuration located at `config-default.yml`.
+
+If a file called `config.yml` is found in the project directory, the default configuration is
+recursively updated with any settings from the custom configuration. Any settings left out in the
+custom user configuration will stay their default values from `config-default.yml`.
 """
 
 import logging
@@ -23,9 +21,8 @@ log = logging.getLogger(__name__)
 
 def _required_env_var_constructor(loader, node):
     """
-    Implements a custom YAML tag for loading required environment
-    variables. If the environment variable is set, this function
-    will simply return it. Otherwise, a `CRITICAL` log message is
+    Implements a custom YAML tag for loading required environment variables. If the environment
+    variable is set, this function will simply return it. Otherwise, a `CRITICAL` log message is
     given and the `KeyError` is re-raised.
 
     Example usage in the YAML configuration:
@@ -48,9 +45,8 @@ def _required_env_var_constructor(loader, node):
 
 def _env_var_constructor(loader, node):
     """
-    Implements a custom YAML tag for loading optional environment
-    variables. If the environment variable is set, returns the
-    value of it. Otherwise, returns `None`.
+    Implements a custom YAML tag for loading optional environment variables. If the environment
+    variable is set, returns the value of it. Otherwise, returns `None`.
 
     Example usage in the YAML configuration:
 
@@ -73,9 +69,8 @@ with open("config-default.yml") as f:
 
 def _recursive_update(original, new):
     """
-    Helper method which implements a recursive `dict.update`
-    method, used for updating the original configuration with
-    configuration specified by the user.
+    Helper method which implements a recursive `dict.update` method, used for updating the original
+    configuration with configuration specified by the user.
     """
 
     for key, value in original.items():
@@ -99,16 +94,17 @@ if Path("config.yml").exists():
 
 class YAMLGetter(type):
     """
-    Implements a custom metaclass used for accessing
-    configuration data by simply accessing class attributes.
-    Supports getting configuration from up to two levels
-    of nested configuration through `section` and `subsection`.
+    Implements a custom metaclass used for accessing configuration data by simply accessing class
+    attributes.
 
-    `section` specifies the YAML configuration section (or "key")
-    in which the configuration lives, and must be set.
+    Supports getting configuration from up to two levels of nested configuration through `section`
+    and `subsection`:
 
-    `subsection` is an optional attribute specifying the section
-    within the section from which configuration should be loaded.
+        `section` specifies the YAML configuration section (or "key") in which the configuration
+        lives, and must be set.
+
+        `subsection` is an optional attribute specifying the section within the section from which
+        configuration should be loaded.
 
     Example Usage:
 
