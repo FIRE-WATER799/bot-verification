@@ -145,7 +145,10 @@ class YAMLGetter(type):
                 (cls.section, cls.subsection, name)
                 if cls.subsection is not None else (cls.section, name)
             )
-            log.critical(f"Tried accessing configuration variable at `{dotted_path}`, but it could not be found.")
+            log.critical(
+                f"Tried accessing configuration variable at `{dotted_path}`, "
+                "but it could not be found."
+            )
             raise
 
     def __getitem__(cls, name):

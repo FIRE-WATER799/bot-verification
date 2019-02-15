@@ -12,7 +12,8 @@ class Security:
 
     def __init__(self, bot: Bot):
         self.bot = bot
-        self.bot.check(self.check_not_bot)  # Global commands check - no bots can run any commands at all
+        # Global commands check - no bots can run any commands at all
+        self.bot.check(self.check_not_bot)
 
     def check_not_bot(self, ctx: Context):
         return not ctx.author.bot

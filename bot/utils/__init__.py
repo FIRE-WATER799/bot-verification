@@ -35,9 +35,9 @@ async def disambiguate(
     choices = (f'{index}: {entry}' for index, entry in enumerate(entries, start=1))
 
     def check(message):
-        return (message.content.isdigit() and
-                message.author == ctx.author and
-                message.channel == ctx.channel)
+        return (message.content.isdigit()
+                and message.author == ctx.author
+                and message.channel == ctx.channel)
 
     try:
         if embed is None:
@@ -49,7 +49,9 @@ async def disambiguate(
 
         # wait_for timeout will go to except instead of the wait_for thing as I expected
         futures = [asyncio.ensure_future(coro1), asyncio.ensure_future(coro2)]
-        done, pending = await asyncio.wait(futures, return_when=asyncio.FIRST_COMPLETED, loop=ctx.bot.loop)
+        done, pending = await asyncio.wait(
+            futures, return_when=asyncio.FIRST_COMPLETED, loop=ctx.bot.loop
+        )
 
         # :yert:
         result = list(done)[0].result()

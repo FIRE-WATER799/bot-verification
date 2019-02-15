@@ -65,9 +65,12 @@ class SnakeAndLaddersGame:
             """
             return (
                 all((
-                    reaction_.message.id == startup.id,       # Reaction is on startup message
-                    reaction_.emoji in STARTUP_SCREEN_EMOJI,  # Reaction is one of the startup emotes
-                    user_.id != self.ctx.bot.user.id,         # Reaction was not made by the bot
+                    # Reaction is on startup message
+                    reaction_.message.id == startup.id,
+                    # Reaction is one of the startup emotes
+                    reaction_.emoji in STARTUP_SCREEN_EMOJI,
+                    # Reaction was not made by the bot
+                    user_.id != self.ctx.bot.user.id,
                 ))
             )
 
@@ -132,19 +135,25 @@ class SnakeAndLaddersGame:
         async with aiohttp.ClientSession() as session:
             async with session.get(avatar_url) as res:
                 avatar_bytes = await res.read()
-                im = Image.open(io.BytesIO(avatar_bytes)).resize((BOARD_PLAYER_SIZE, BOARD_PLAYER_SIZE))
+                im = Image.open(
+                    io.BytesIO(avatar_bytes)
+                ).resize((BOARD_PLAYER_SIZE, BOARD_PLAYER_SIZE))
                 self.avatar_images[user.id] = im
 
     async def player_join(self, user: Member):
         for p in self.players:
             if user == p:
-                await self.channel.send(user.mention + " You are already in the game.", delete_after=10)
+                await self.channel.send(
+                    f"{user.mention} You are already in the game.", delete_after=10
+                )
                 return
         if self.state != 'waiting':
-            await self.channel.send(user.mention + " You cannot join at this time.", delete_after=10)
+            await self.channel.send(
+                f"{user.mention} You cannot join at this time.", delete_after=10
+            )
             return
         if len(self.players) is MAX_PLAYERS:
-            await self.channel.send(user.mention + " The game is full!", delete_after=10)
+            await self.channel.send(f"{user.mention} The game is full!", delete_after=10)
             return
 
         await self._add_player(user)
@@ -158,7 +167,7 @@ class SnakeAndLaddersGame:
     async def player_leave(self, user: Member):
         if user == self.author:
             await self.channel.send(
-                user.mention + " You are the author, and cannot leave the game. Execute "
+                f"{user.mention} You are the author, and cannot leave the game. Execute "
                 "`sal cancel` to cancel the game.",
                 delete_after=10
             )
@@ -169,26 +178,32 @@ class SnakeAndLaddersGame:
                 self.player_tiles.pop(p.id, None)
                 self.round_has_rolled.pop(p.id, None)
                 await self.channel.send(
-                    "**Snakes and Ladders**: " + user.mention + " has left the game.",
+                    f"**Snakes and Ladders**: {user.mention} has left the game.",
                     delete_after=10
                 )
 
                 if self.state != 'waiting' and len(self.players) == 1:
-                    await self.channel.send("**Snakes and Ladders**: The game has been surrendered!")
+                    await self.channel.send(
+                        "**Snakes and Ladders**: The game has been surrendered!"
+                    )
                     self._destruct()
                 return
-        await self.channel.send(user.mention + " You are not in the match.", delete_after=10)
+        await self.channel.send(f"{user.mention} You are not in the match.", delete_after=10)
 
     async def cancel_game(self, user: Member):
         if not user == self.author:
-            await self.channel.send(user.mention + " Only the author of the game can cancel it.", delete_after=10)
+            await self.channel.send(
+                f"{user.mention} Only the author of the game can cancel it.", delete_after=10
+            )
             return
         await self.channel.send("**Snakes and Ladders**: Game has been canceled.")
         self._destruct()
 
     async def start_game(self, user: Member):
         if not user == self.author:
-            await self.channel.send(user.mention + " Only the author of the game can start it.", delete_after=10)
+            await self.channel.send(
+                f"{user.mention} Only the author of the game can start it.", delete_after=10
+            )
             return
         if len(self.players) < 1:
             await self.channel.send(
@@ -197,11 +212,15 @@ class SnakeAndLaddersGame:
             )
             return
         if not self.state == 'waiting':
-            await self.channel.send(user.mention + " The game cannot be started at this time.", delete_after=10)
+            await self.channel.send(
+                "{user.mention} The game cannot be started at this time.", delete_after=10
+            )
             return
         self.state = 'starting'
         player_list = ', '.join(user.mention for user in self.players)
-        await self.channel.send("**Snakes and Ladders**: The game is starting!\nPlayers: " + player_list)
+        await self.channel.send(
+            f"**Snakes and Ladders**: The game is starting!\nPlayers: {player_list}"
+        )
         await self.start_round()
 
     async def start_round(self):
@@ -212,9 +231,12 @@ class SnakeAndLaddersGame:
             """
             return (
                 all((
-                    reaction_.message.id == self.positions.id,  # Reaction is on positions message
-                    reaction_.emoji in GAME_SCREEN_EMOJI,       # Reaction is one of the game emotes
-                    user_.id != self.ctx.bot.user.id,           # Reaction was not made by the bot
+                    # Reaction is on positions message
+                    reaction_.message.id == self.positions.id,
+                    # Reaction is one of the game emotes
+                    reaction_.emoji in GAME_SCREEN_EMOJI,
+                    # Reaction was not made by the bot
+                    user_.id != self.ctx.bot.user.id,
                 ))
             )
 
@@ -228,9 +250,10 @@ class SnakeAndLaddersGame:
             tile = self.player_tiles[player.id]
             tile_coordinates = self._board_coordinate_from_index(tile)
             x_offset = BOARD_MARGIN[0] + tile_coordinates[0] * BOARD_TILE_SIZE
-            y_offset = \
-                BOARD_MARGIN[1] + (
-                    (10 * BOARD_TILE_SIZE) - (9 - tile_coordinates[1]) * BOARD_TILE_SIZE - BOARD_PLAYER_SIZE)
+            y_offset = BOARD_MARGIN[1] + (
+                (10 * BOARD_TILE_SIZE) - (9 - tile_coordinates[1])
+                * BOARD_TILE_SIZE - BOARD_PLAYER_SIZE
+            )
             x_offset += BOARD_PLAYER_SIZE * (i % player_row_size)
             y_offset -= BOARD_PLAYER_SIZE * math.floor(i / player_row_size)
             board_img.paste(self.avatar_images[player.id],
@@ -238,7 +261,11 @@ class SnakeAndLaddersGame:
         stream = io.BytesIO()
         board_img.save(stream, format='JPEG')
         board_file = File(stream.getvalue(), filename='Board.jpg')
-        player_list = '\n'.join((user.mention + ": Tile " + str(self.player_tiles[user.id])) for user in self.players)
+        player_list = '\n'.join(
+            (user.mention + ": Tile " + str(self.player_tiles[user.id]))
+            for user
+            in self.players
+        )
 
         # Store and send new messages
         temp_board = await self.channel.send(
@@ -299,10 +326,12 @@ class SnakeAndLaddersGame:
 
     async def player_roll(self, user: Member):
         if user.id not in self.player_tiles:
-            await self.channel.send(user.mention + " You are not in the match.", delete_after=10)
+            await self.channel.send(f"{user.mention} You are not in the match.", delete_after=10)
             return
         if self.state != 'roll':
-            await self.channel.send(user.mention + " You may not roll at this time.", delete_after=10)
+            await self.channel.send(
+                f"{user.mention} You may not roll at this time.", delete_after=10
+            )
             return
         if self.round_has_rolled[user.id]:
             return
@@ -340,7 +369,9 @@ class SnakeAndLaddersGame:
             return
 
         # announce winner and exit
-        await self.channel.send("**Snakes and Ladders**: " + winner.mention + " has won the game! :tada:")
+        await self.channel.send(
+            f"**Snakes and Ladders**: {winner.mention} has won the game! :tada:"
+        )
         self._destruct()
 
     def _check_winner(self) -> Member:
